@@ -1,7 +1,7 @@
 # my global config
 global:
-  scrape_interval: 1s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
-  evaluation_interval: 1s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  scrape_interval: 5s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 5s # Evaluate rules every 15 seconds. The default is every 1 minute.
   # scrape_timeout is set to the global default (10s).
 
 # Alertmanager configuration
@@ -31,7 +31,7 @@ scrape_configs:
   - job_name: "circuit-breaker-poc"
 
     metrics_path: '/actuator/prometheus'
-    scrape_interval: 1s
+    scrape_interval: 5s
 
     static_configs:
       - targets: ["circuit-breaker-poc:5000"]

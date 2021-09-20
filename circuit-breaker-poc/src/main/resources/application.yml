@@ -1,5 +1,5 @@
 server:
-  port: 5010
+  port: 5000
 
 logging:
   level:
@@ -55,8 +55,8 @@ spring:
 
 app-config:
   dumb-localhost:
-#    url: "http://dumb-localhost:5001/payment"
-    url: http://localhost:5001/payment
+    url: "http://dumb-localhost:5001/payment"
+#    url: http://localhost:5001/payment
   bankId:
     1: Mercado Pago
     2: Santander
