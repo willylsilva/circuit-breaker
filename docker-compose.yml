@@ -16,7 +16,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - /d/Documents/PoC/circuit-breaker/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - /d/Documents/PoC/circuit-breaker/grafana:/var/lib/grafana
   prometheus:
     container_name: prometheus
     image: prom/prometheus
