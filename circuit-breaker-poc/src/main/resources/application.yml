@@ -1,14 +1,10 @@
 server:
-  port: 5000
+  port: 5010
 
 logging:
   level:
     root: INFO
-    com.poc.willy: INFO
-
-dumb-localhost:
-  url: http://dumb-localhost:5001/payment
-#  url: http://localhost:5001/payment
+    com.poc.willy: DEBUG
 
 management:
 #  health:
@@ -56,3 +52,12 @@ spring:
   cloud:
     discovery:
       enabled: false
+
+app-config:
+  dumb-localhost:
+#    url: "http://dumb-localhost:5001/payment"
+    url: http://localhost:5001/payment
+  bankId:
+    1: Mercado Pago
+    2: Santander
+    3: Itau

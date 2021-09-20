@@ -1,11 +1,11 @@
 package com.poc.willy.circuitbreakerpoc.adapter.out;
 
+import com.poc.willy.circuitbreakerpoc.adapter.config.AppConfig;
 import com.poc.willy.circuitbreakerpoc.application.dto.PaymentDto;
 import com.poc.willy.circuitbreakerpoc.application.port.out.PaymentOutput;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.HttpEntity;
@@ -24,11 +24,10 @@ public class PaymentGateway implements PaymentOutput {
 
     private static final Logger log = LoggerFactory.getLogger(PaymentGateway.class);
 
-    @Value("${dumb-localhost.url}")
-    private final String url;
+    private final AppConfig appConfig;
 
-    public PaymentGateway(String url, CircuitBreakerFactory circuitBreakerFactory, RestTemplate restTemplate) {
-        this.url = url;
+    public PaymentGateway(AppConfig appConfig, CircuitBreakerFactory circuitBreakerFactory, RestTemplate restTemplate) {
+        this.appConfig = appConfig;
         this.circuitBreakerFactory = circuitBreakerFactory;
         this.restTemplate = restTemplate;
     }
@@ -39,11 +38,10 @@ public class PaymentGateway implements PaymentOutput {
     @Override
     public void order(PaymentDto paymentDto) throws TimeoutException {
 
-        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitBreaker" + paymentDto.getBankId());
-
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create(appConfig.getBankId().get(paymentDto.getBankId()));
 
         ResponseEntity<Void> response = circuitBreaker.run(() -> restTemplate.exchange(
-                        url,
+                        appConfig.getUrl(),
                         HttpMethod.POST,
                         new HttpEntity<>(paymentDto),
                         Void.class)
