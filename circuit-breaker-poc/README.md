@@ -1,18 +1,8 @@
-# circuit-breaker
-
-PoC to use a circuit breaker by BankId
-
-## Getting started App
-
-- Just execute 
-```
-docker-compose up --build -d
-
-```
-And use the postman collection...
+# circuit-breaker-poc
 
 
-## Getting started GitLab
+
+## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
@@ -25,7 +15,7 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://gitlab.com/willylsilva/circuit-breaker.git
+git remote add origin https://gitlab.com/willylsilva/circuit-breaker-poc.git
 git branch -M main
 git push -uf origin main
 ```
