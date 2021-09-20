@@ -2,7 +2,17 @@
 
 PoC to use a circuit breaker by BankId
 
-## Getting started
+## Getting started App
+
+- Just execute 
+```
+docker-compose up --build -d
+
+```
+And use the postman collection...
+
+
+## Getting started GitLab
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
