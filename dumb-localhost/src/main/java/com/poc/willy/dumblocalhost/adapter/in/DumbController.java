@@ -24,9 +24,10 @@ public class DumbController {
         BigDecimal[] remainder = paymentRequest.getAmount().divideAndRemainder(BigDecimal.valueOf(2));
 //        if (remainder[1].equals(BigDecimal.ZERO)) {
         if (paymentRequest.getBankId() == 1) {
-            if ((calls > 1 && calls < 300) ||
-                    (calls > 600 && calls < 800) ||
-                    (calls > 1200 && calls < 1500)
+            if (
+//                    (calls > 1 && calls < 300) ||
+                    (calls > 400 && calls < 800) ||
+                    (calls > 1800 && calls < 2200)
             ) {
 
                 log.info("Throw SocketTimeoutException");
