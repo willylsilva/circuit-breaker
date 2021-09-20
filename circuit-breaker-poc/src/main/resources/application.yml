@@ -1,0 +1,58 @@
+server:
+  port: 5000
+
+logging:
+  level:
+    root: INFO
+    com.poc.willy: INFO
+
+dumb-localhost:
+  url: http://dumb-localhost:5001/payment
+#  url: http://localhost:5001/payment
+
+management:
+#  health:
+#    circuitbreakers.enabled: false
+#    ratelimiters.enabled: false
+#    shutdown.enabled: false
+  metrics:
+    enable.all: true
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      resilience4j.circuitbreaker.calls: true
+  endpoint:
+    health.show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimunNumberOfCalls: 100
+        permittedNumberOfCallsInHalfOpenState: 50
+        automaticTransitionFromOpenToHalfOpenEnable: true
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 15
+        eventConsumerBufferSize: 10
+        recordExceptions:
+          - java.net.SocketTimeoutException
+          - java.util.concurrent.TimeoutException
+          - org.springframework.web.client.HttpServerErrorException
+          - java.net.http.HttpTimeoutException
+  ratelimiter:
+    configs:
+      default:
+        registerHealthIndicator: true
+        timeoutDuration: 2s
+        cancelRunnigFuture: true
+
+spring:
+  cloud:
+    discovery:
+      enabled: false
