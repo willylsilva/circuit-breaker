@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "2baa5efe-db06-4fea-9b52-a51338e085d2",
+		"name": "PoC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Order Payment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Sucesso 200\", function() {\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"\r",
+							"var amount = parseFloat(pm.collectionVariables.get(\"amount\")) + 1\r",
+							"var bankId = 0\r",
+							"\r",
+							"if (amount % 2 == 0) {\r",
+							"    bankId = 1\r",
+							"} else {\r",
+							"    bankId = 2\r",
+							"}\r",
+							"\r",
+							"pm.collectionVariables.set(\"amount\", amount)\r",
+							"pm.collectionVariables.set(\"bankId\", bankId)\r",
+							"\r",
+							"if (pm.response.code == 412) {\r",
+							"    pm.collectionVariables.set(\"412\" ,parseFloat(pm.collectionVariables.get(\"412\")) + 1)\r",
+							"} else if (pm.response.code == 503) {\r",
+							"    pm.collectionVariables.set(\"503\" ,parseFloat(pm.collectionVariables.get(\"503\")) + 1)\r",
+							"} else if (pm.response.code == 408) {\r",
+							"    pm.collectionVariables.set(\"408\" ,parseFloat(pm.collectionVariables.get(\"408\")) + 1)\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"transactionId\" : \"{{$guid}}\",\r\n    \"name\" : \"Willy\",\r\n    \"bankId\" : {{bankId}},\r\n    \"amount\" : {{amount}}\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/payment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"payment"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "bankId",
+			"value": "1"
+		},
+		{
+			"key": "amount",
+			"value": "0"
+		},
+		{
+			"key": "408",
+			"value": "0"
+		},
+		{
+			"key": "412",
+			"value": "0"
+		},
+		{
+			"key": "503",
+			"value": "0"
+		}
+	]
+}
