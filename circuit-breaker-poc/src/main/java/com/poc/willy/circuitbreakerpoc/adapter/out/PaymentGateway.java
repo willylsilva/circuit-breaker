@@ -36,7 +36,7 @@ public class PaymentGateway implements PaymentOutput {
     private final RestTemplate restTemplate;
 
     @Override
-    public void order(PaymentDto paymentDto) throws TimeoutException {
+    public void order(PaymentDto paymentDto) {
 
         CircuitBreaker circuitBreaker = circuitBreakerFactory.create(appConfig.getBankId().get(paymentDto.getBankId()));
 
@@ -48,23 +48,22 @@ public class PaymentGateway implements PaymentOutput {
                 , this::fallback
         );
 
-        if (response.getStatusCodeValue() == 504) {
-            throw new TimeoutException("deu timeout");
-        }
+//        if (response.getStatusCodeValue() == 504) {
+//            throw new TimeoutException("deu timeout");
+//        }
     }
 
     private ResponseEntity<Void> fallback(Throwable e) {
         log.info("Fallback started...");
         if (e instanceof ResourceAccessException) {
             log.error("Fallback ResourceAccessException");
-            throw new HttpServerErrorException(HttpStatus.BAD_GATEWAY, e.getMessage());
+            throw (ResourceAccessException) e;
 //            throw new HttpServerErrorException(HttpStatus.BAD_GATEWAY, "Fallback ResourceAccessException");
         } else if (e instanceof HttpServerErrorException) {
-//            log.error("Fallback HttpServerErrorException", e.getCause());
-            throw new HttpServerErrorException(HttpStatus.PRECONDITION_FAILED, e.getMessage());
+            throw (HttpServerErrorException) e;
 //            throw new HttpServerErrorException(HttpStatus.PRECONDITION_FAILED, "Fallback HttpServerErrorException");
         } else if (e instanceof CallNotPermittedException) {
-            throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
+            throw (CallNotPermittedException) e;
 //            throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "chamada nao permitida pelo circuit breakers " + ((CallNotPermittedException) e).getCausingCircuitBreakerName());
         }
 

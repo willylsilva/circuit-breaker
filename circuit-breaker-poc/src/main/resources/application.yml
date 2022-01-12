@@ -47,7 +47,11 @@ resilience4j:
         registerHealthIndicator: true
         timeoutDuration: 2s
         cancelRunnigFuture: true
-
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 13s
+        cancelRunnigFuture: true
 spring:
   cloud:
     discovery:
